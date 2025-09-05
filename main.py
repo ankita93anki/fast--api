@@ -11,9 +11,13 @@ def admin():
 def profile(username):
     return {f'This is a profile page for {username}'}
 
-#query parameter
+#required query parameter
 @app.get('/products')
-def products(id:int=1,price:int=2):
+def products(id:int=None,price:int=None):
     return {f'Product with an id: {id} and price = {price}'}
 
+#use path & query parametr
+@app.get('/profile/{userid}/comments')
+def profile(userid:int,commentId:int):
+    return {f'Profile page for user with userid {userid} and comment for comment id {commentId}'}
 
