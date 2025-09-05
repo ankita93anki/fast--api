@@ -1,3 +1,6 @@
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+env\Scripts\activate
+
 An API is a code which allows two program to communicate.
 
 A developer can write a program which can communicate with an API. 
