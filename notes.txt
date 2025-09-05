@@ -41,3 +41,7 @@ def profile(username):
 def products(id):
     return {f'Product with an id: {id}'}
 
+# by default query parameter
+@app.get('/products')
+def products(id=1,price=2):
+    return {f'Product with an id: {id} and price = {price}'}

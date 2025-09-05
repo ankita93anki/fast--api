@@ -13,7 +13,7 @@ def profile(username):
 
 #query parameter
 @app.get('/products')
-def products(id,price):
+def products(id:int=1,price:int=2):
     return {f'Product with an id: {id} and price = {price}'}
 
 
