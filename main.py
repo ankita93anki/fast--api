@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from pydantic import BaseModel, Field, HttpUrl, ConfigDict
 from typing import Set,List
 from datetime import date, datetime, time, timedelta
@@ -60,6 +60,11 @@ class User(BaseModel):
     email:str
 
 app = FastAPI()
+
+@app.post('/login')
+def login(username: str = Form(...), password: str = Form(...)):
+    #pip install python-multipart
+    return {"username":username}
 
 @app.post('/addEvent')
 def addevent(event: Event):

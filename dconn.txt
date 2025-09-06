@@ -1,0 +1,20 @@
+Connecting tot the database -
+With fast API, you can use relational as well as non-relational database
+we can use any relational database like -
+PostgreSQL
+MySQL
+Sqlite
+Oracle
+Microsoft SQL Server
+We can use these database as they are supported by sqlalchemy
+
+what is SQL Alchemy ?
+SQL Alchemy is a python SQL toolkit
+
+It is an object relational mapper that gives application developers full power and flexibility of SQL.
+
+In an object relational mapper, the database tables are classes and tables rows can be treated as objects.
+
+This allows us to use SQL database without having to write or know any SQL commands
+
+we need sqllite database and  sqlalchemy
