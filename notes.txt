@@ -228,3 +228,150 @@ def addUser(profile:Profile):
     return profile
 
 
+25-Providing example data
+from fastapi import FastAPI
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict
+from typing import Set,List
+
+class Profile(BaseModel):
+    name: str
+    email: str
+    age: int
+
+class Image(BaseModel):
+    url:HttpUrl
+    name:str
+
+class Product(BaseModel):
+    model_config = ConfigDict(json_schema_extra={
+        "example":{
+            "name":"Phone",
+            "price":100,
+            "discount":10,
+            "discounted_price":0,
+            "tags":["Electronics","Computers"],
+            "image":[
+                    {
+                        "url":"http://www.google.com",
+                        "name": "phone image"
+                    },
+                    {
+                        "url":"http://www.google.com",
+                        "name": "phone image side view"
+                    }
+            ]
+        }
+    })
+    name:str
+    price:int = Field(title="Price of the item", description="This would be the price of the item being added", gt=0)
+    discount:int 
+    discounted_price:float
+    tags: Set[str] = []
+    image:List[Image]
+
+class Offer(BaseModel):
+    name:str
+    description:str
+    price:float
+    products:List[Product]
+
+class User(BaseModel):
+    name:str
+    email:str
+
+app = FastAPI()
+
+@app.post('/addoffer')
+def addoffer(offer:Offer):
+    return {offer}
+
+@app.post('/purchase')
+def purchase(user:User, product:Product):
+    return {'user':user,"product":product}
+
+@app.post('/addproduct/{product_id}')
+def addProduct(product:Product, product_id: int, category:str):
+    product.discounted_price = product.price - (product.price * product.discount)/100
+    return {"product_id":product_id,"product":product, "category":category}
+
+@app.post('/adduser')
+def addUser(profile:Profile):
+    return profile
+
+26-defining example data using fields
+from fastapi import FastAPI
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict
+from typing import Set,List
+from datetime import date
+from uuid import UUID
+
+class Event(BaseModel):
+    event_id: UUID
+    start_date: date
+
+class Profile(BaseModel):
+    name: str = Field(example="abc")
+    email: str
+    age: int
+
+class Image(BaseModel):
+    url:HttpUrl
+    name:str
+
+class Product(BaseModel):
+    name:str
+    price:int = Field(title="Price of the item", description="This would be the price of the item being added", gt=0)
+    discount:int 
+    discounted_price:float
+    tags: Set[str] = []
+    image:List[Image]
+
+    model_config = ConfigDict(json_schema_extra={
+        "example":{
+            "name":"Phone",
+            "price":100,
+            "discount":10,
+            "discounted_price":0,
+            "tags":["Electronics","Computers"],
+             "image":[
+                    {
+                        "url":"http://www.google.com",
+                        "name": "phone image"
+                    },
+                    {
+                        "url":"http://www.google.com",
+                        "name": "phone image side view"
+                    }
+            ]
+        }
+    })
+   
+class Offer(BaseModel):
+    name:str
+    description:str
+    price:float
+    products:List[Product]
+
+class User(BaseModel):
+    name:str
+    email:str
+
+app = FastAPI()
+
+@app.post('/addoffer')
+def addoffer(offer:Offer):
+    return {offer}
+
+@app.post('/purchase')
+def purchase(user:User, product:Product):
+    return {'user':user,"product":product}
+
+@app.post('/addproduct/{product_id}')
+def addProduct(product:Product, product_id: int, category:str):
+    product.discounted_price = product.price - (product.price * product.discount)/100
+    return {"product_id":product_id,"product":product, "category":category}
+
+@app.post('/adduser')
+def addUser(profile:Profile):
+    return profile
+

@@ -1,9 +1,19 @@
 from fastapi import FastAPI
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict
 from typing import Set,List
+from datetime import date, datetime, time, timedelta
+from uuid import UUID
+
+class Event(BaseModel):
+    event_id: UUID
+    start_date: date
+    start_time: datetime
+    end_Time: datetime
+    repeat_time: time
+    execute_after: timedelta
 
 class Profile(BaseModel):
-    name: str
+    name: str = Field(example="abc")
     email: str
     age: int
 
@@ -19,6 +29,26 @@ class Product(BaseModel):
     tags: Set[str] = []
     image:List[Image]
 
+    model_config = ConfigDict(json_schema_extra={
+        "example":{
+            "name":"Phone",
+            "price":100,
+            "discount":10,
+            "discounted_price":0,
+            "tags":["Electronics","Computers"],
+             "image":[
+                    {
+                        "url":"http://www.google.com",
+                        "name": "phone image"
+                    },
+                    {
+                        "url":"http://www.google.com",
+                        "name": "phone image side view"
+                    }
+            ]
+        }
+    })
+   
 class Offer(BaseModel):
     name:str
     description:str
@@ -30,6 +60,10 @@ class User(BaseModel):
     email:str
 
 app = FastAPI()
+
+@app.post('/addEvent')
+def addevent(event: Event):
+    return event
 
 @app.post('/addoffer')
 def addoffer(offer:Offer):
